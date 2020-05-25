@@ -60,11 +60,11 @@ The server creates a new file for every user who signs up. The name of this file
 # Commands to compile and run
 
 ## Compilation
-To compile for server : make server
+To compile for server : make server <br>
 To compile for client : make client
 
 ## Execution
-To execute server : ./server
+To execute server : ./server <br>
 To execute client : ./client
 
 # Commands to clean
