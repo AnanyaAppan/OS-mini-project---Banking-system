@@ -118,6 +118,8 @@ void *connection_handler(void *socket_desc)
 			return_message = get_details(username);
 		}
 		else if(option == DEL_USER) {
+			char* username = malloc(BUF_SIZE*sizeof(char));
+			char* password = malloc(BUF_SIZE*sizeof(char));
 			read( sock , username, sizeof(username));
 			ret = del_user(username);
 			printf("unlink returned %d\n",ret);
@@ -125,21 +127,30 @@ void *connection_handler(void *socket_desc)
 			else return_message = "user deleted successfully\n";
 		}
 		else if(option == MOD_USER) {
+			char* username = malloc(BUF_SIZE*sizeof(char));
+			char* password = malloc(BUF_SIZE*sizeof(char));
+
 			read( sock , username, sizeof(username));
 			read( sock , new_username, sizeof(new_username));
 			read( sock , password, sizeof(password));
+
 			ret = modify_user (username, new_username,password);
-			if (ret == -1) return_message = "unable to change password\n";
-			else return_message = "changed password successfully\n";
+			if (ret == -1) return_message = "unable to change user\n";
+			else return_message = "changed user successfully\n";
 		}
 		else if (option == GET_USER_DETAILS) {
+			char* username = malloc(BUF_SIZE*sizeof(char));
 			read( sock , username, sizeof(username));
+			printf("username = %s\n",username);
 			return_message = get_details(username);
 		}
 		else if (option == ADD_USER) {
+			char* username = malloc(BUF_SIZE*sizeof(char));
+			char* password = malloc(BUF_SIZE*sizeof(char));
 			read( sock , type, sizeof(type));
 			read( sock , username, sizeof(username));
 			read( sock , password, sizeof(password));
+			printf("type = %s username = %s pwd = %s\n",type,username,password);
 			if(!strcmp(type,"1")) option = SIGN_UP_AS_USER;
 			else option = SIGN_UP_AS_JOINT;
 			ret = signup(option,username,password);

@@ -219,16 +219,17 @@ char* get_details(char* username){
     fd = open(filename,O_RDWR,0644);
     if(fd == -1){
         perror("open"); 
+        return "user does not exist\n";
     }
     struct account acc;
     struct user u;
-    if(fcntl(fd, F_SETLKW, &lock)==-1) {perror("fcntl");}
+    if(fcntl(fd, F_SETLKW, &lock)==-1) {perror("fcntl"); return "sorry, section is locked\n";}
     // start of critical section
     lseek(fd,0,SEEK_SET);
     if(read(fd,&u,sizeof(struct user))==-1)
-        perror("read");
+        {perror("read"); return "unable to read file\n";}
     if(read(fd,&acc,sizeof(struct account))==-1)
-        perror("read");
+        {perror("read"); return "unable to read file\n";}
     // end of critical section
     lock.l_type = F_UNLCK;
     fcntl(fd,F_SETLKW,&lock);

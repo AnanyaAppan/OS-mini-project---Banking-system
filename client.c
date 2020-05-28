@@ -24,7 +24,6 @@ int main(int argc, char const *argv[])
 		return -1; 
 	} 
 
-	printf("sock = %d\n",sock);
 	serv_addr.sin_family = AF_INET; 
 	serv_addr.sin_port = htons(PORT); 
 
@@ -50,9 +49,19 @@ void interface(int sock){
 	option = printOptions(START_MENU);
 	switch (option) {
 		case SIGN_UP:
-			get_auth_details(sock,SIGN_UP_OPTIONS);
+			opt_ret = get_auth_details(sock,SIGN_UP_OPTIONS);
 			while(1) {
-				user_interface(sock);
+				switch (opt_ret) {
+					case SIGN_UP_AS_USER : 
+						user_interface(sock);
+						break;
+					case SIGN_UP_AS_JOINT :
+						user_interface(sock);
+						break;
+					case SIGN_UP_AS_ADMIN :
+						admin_interface(sock);
+						break;
+				}
 			}
 			break;
 		case SIGN_IN:
